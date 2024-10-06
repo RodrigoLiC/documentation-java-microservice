@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: API de Estudiantes e Inscripciones
+  description: API para gestionar estudiantes e inscripciones en UTEC.
+  version: 1.0.0
+
+servers:
+  - url: http://127.0.0.1:8000
+    description: Servidor de desarrollo
+
+paths:
+  /estudiantes:
+    get:
+      summary: Obtener todos los estudiantes
+      responses:
+        '200':
+          description: Un arreglo JSON de estudiantes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Estudiante'
+    post:
+      summary: Añadir un nuevo estudiante
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Estudiante'
+      responses:
+        '200':
+          description: Estudiante creado exitosamente
+
+  /estudiantes/{codigo}:
+    parameters:
+      - in: path
+        name: codigo
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Obtener un estudiante por código
+      responses:
+        '200':
+          description: Un objeto de estudiante
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estudiante'
+        '404':
+          description: Estudiante no encontrado
+    put:
+      summary: Actualizar un estudiante por código
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Estudiante'
+      responses:
+        '200':
+          description: Estudiante actualizado exitosamente
+        '404':
+          description: Estudiante no encontrado
+    delete:
+      summary: Eliminar un estudiante por código
+      responses:
+        '200':
+          description: Estudiante eliminado exitosamente
+        '404':
+          description: Estudiante no encontrado
+
+  /inscripciones:
+    get:
+      summary: Obtener todas las inscripciones
+      responses:
+        '200':
+          description: Un arreglo JSON de inscripciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inscripcion'
+    post:
+      summary: Crear una nueva inscripción
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inscripcion'
+      responses:
+        '200':
+          description: Inscripción creada exitosamente
+
+  /inscripciones/{idInscripcion}:
+    parameters:
+      - in: path
+        name: idInscripcion
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Obtener una inscripción por ID
+      responses:
+        '200':
+          description: Un objeto de inscripción
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inscripcion'
+        '404':
+          description: Inscripción no encontrada
+    delete:
+      summary: Eliminar una inscripción por ID
+      responses:
+        '200':
+          description: Inscripción eliminada exitosamente
+        '404':
+          description: Inscripción no encontrada
+
+components:
+  schemas:
+    Estudiante:
+      type: object
+      properties:
+        codigo:
+          type: string
+        nombre:
+          type: string
+        apellido:
+          type: string
+        dni:
+          type: string
+        telefono:
+          type: string
+        sexo:
+          type: string
+        edad:
+          type: integer
+        carrera:
+          type: string
+        fechaNacimiento:
+          type: string
+          format: date
+
+    Inscripcion:
+      type: object
+      properties:
+        idInscripcion:
+          type: integer
+        fecha:
+          type: string
+          format: date
+        idCurso:
+          type: integer
+        idProfesor:
+          type: integer
+        codigoEstudiante:
+          type: string
